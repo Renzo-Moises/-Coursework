@@ -1,0 +1,29 @@
+grammar org.simplequiz.QuizDSL with org.eclipse.xtext.common.Terminals
+
+generate quizDSL "http://www.simplequiz.org/QuizDSL"
+
+Model:
+    quizzes+=Quiz*;
+
+Quiz:
+    'quiz' name=STRING '{'
+        randomizeOrder?='randomizeOrder' '=' booleanLiteral?
+        questions+=Question*
+    '}';
+
+booleanLiteral:
+    'true' | 'false';
+
+Question:
+    'question' text=STRING 
+    calculated?='calculated'? // new optional flag
+    '{'
+        expression=Expression?     // optional expression
+        choices+=Choice*
+    '}';
+    
+Expression:
+    'expression' value=STRING;
+
+Choice:
+    'choice' text=STRING correctness=('correct' | 'incorrect');
